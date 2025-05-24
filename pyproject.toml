@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "stxml"
+version = "0.1.0"
+description = "XML schema for STGPX."
+authors = ["Paul D.Smith <paul_d_smith@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+xmlschema = "^4.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

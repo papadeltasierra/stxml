@@ -5,7 +5,8 @@ import pytest
 import xml.etree.ElementTree as ET
 import xmlschema
 
-SCHEMA_FILE = os.path.join(os.path.dirname(__file__), "../schema/stgpx-schema-1.0.xsd")
+# Combine schema files to test extensions.
+SCHEMA_FILE = os.path.join(os.path.dirname(__file__), "combined.xsd")
 
 successful_cases = [
     (
@@ -26,24 +27,32 @@ successful_cases = [
 </activity>""",
     ),
     (
-        "maximial",
+        "maximal",
         '<?xml version="1.0"?>'
         + '<activity xmlns="https://www.w3schools.com" '
         + 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
-        + 'xsi:schemaLocation="https://www.w3schools.com ../../schema/stgpx-schema-1.0.xsd">'
+        + 'xsi:schemaLocation="https://www.w3schools.com ../../schema/stgpx-schema-1.0.xsd ./extension.xsd">'
         + "<gpx>boris.gpx</gpx>"
         + "<started>2023-10-01T12:00:00Z</started>"
         + "<type>Running</type>"
+        + "<extension>"
+        + "<someExtension>Some value</someExtension>"
+        + "</extension>"
         + "</activity>",
     ),
     (
         "maximal with whitespace",
         """<?xml version="1.0"?>
-
-<activity xmlns="https://www.w3schools.com"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="https://www.w3schools.com ../../schema/stgpx-schema-1.0.xsd">
-</activity>""",
+        <activity xmlns="https://www.w3schools.com"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://www.w3schools.com ../../schema/stgpx-schema-1.0.xsd ./extension.xsd">
+            <gpx>boris.gpx</gpx>
+            <started>2023-10-01T12:00:00Z</started>
+            <type>Running</type>
+            <extension>
+                <someExtension>Some value</someExtension>
+            </extension>
+        </activity>""",
     ),
 ]
 
@@ -62,10 +71,28 @@ failure_cases = [
         <unknown>What is this?</unknown>
 </activity>
 """,
-        "Unexpected child with tag '{https://www.w3schools.com}unknown",
+        "Unexpected child with tag '{https://www.w3schools.com}unknown'",
     ),
     (
-        "Unknown with whitespace",
+        "Unknown extension",
+        """<?xml version="1.0"?>
+
+<activity xmlns="https://www.w3schools.com"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="https://www.w3schools.com ../../schema/stgpx-schema-1.0.xsd">
+
+        <gpx>boris.gpx</gpx>
+        <started>2023-10-01T12:00:00Z</started>
+        <type>Running</type>
+        <extension>
+            <noIdea>hat is this?</noIdea>
+        </extension>
+</activity>
+""",
+        "element '{https://www.w3schools.com}noIdea' not found",
+    ),
+    (
+        "Duplicate GPX",
         """<?xml version="1.0"?>
 
 <activity xmlns="https://www.w3schools.com"
@@ -81,7 +108,7 @@ failure_cases = [
         "Unexpected child with tag '{https://www.w3schools.com}gpx",
     ),
     (
-        "Unknown with whitespace",
+        "Duplicate started",
         """<?xml version="1.0"?>
 
 <activity xmlns="https://www.w3schools.com"
@@ -97,7 +124,7 @@ failure_cases = [
         "Unexpected child with tag '{https://www.w3schools.com}started",
     ),
     (
-        "Unknown with whitespace",
+        "Duplicate type",
         """<?xml version="1.0"?>
 
 <activity xmlns="https://www.w3schools.com"

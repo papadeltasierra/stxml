@@ -5,9 +5,7 @@ import pytest
 import xml.etree.ElementTree as ET
 import xmlschema
 
-SCHEMA_FILE = os.path.join(
-    os.path.dirname(__file__), "../../schema/stgpx-schema-1.0.xsd"
-)
+SCHEMA_FILE = os.path.join(os.path.dirname(__file__), "../schema/stgpx-schema-1.0.xsd")
 
 successful_cases = [
     (

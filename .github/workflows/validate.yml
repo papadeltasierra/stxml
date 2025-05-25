@@ -31,8 +31,4 @@ jobs:
       - name: Test with pytest
         run: |
           pip install pytest
-          echo "**** HELLO ****"
-          pwd
-          find .
-          echo "**** HELLO ****"
           pytest test/test_schema.py

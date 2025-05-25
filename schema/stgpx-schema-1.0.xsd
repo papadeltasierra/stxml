@@ -7,9 +7,9 @@
 <xs:element name="activity">
   <xs:complexType>
     <xs:sequence>
-      <xs:element name="gpx" type="xs:string"/>
-      <xs:element name="started" type="xs:dateTime"/>
-      <xs:element name="type" type="xs:string"/>
+      <xs:element name="gpx" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="started" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>

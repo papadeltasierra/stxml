@@ -22,7 +22,7 @@ targetNamespace="https://www.w3schools.com"
 xmlns="https://www.w3schools.com"
 elementFormDefault="qualified">
 
-<xs:element name="someExtension" type="xs:string"/>
+<xs:element name="holiday" type="xs:string"/>
 
 </xs:schema>
 ```
